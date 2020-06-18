@@ -1,6 +1,6 @@
 # 자료 받아오기
 
-data1 <- read.csv("car data.csv",
+car_data <- read.csv("car data.csv",
                      header = T)
 
 head(car_data)
@@ -24,16 +24,19 @@ car_data <- car_data[-1]
 car_lm <- lm(Present_Price~., data=car_data)
 summary(car_lm)
 
+
 car_step <- step(car_lm, direction = "both")
 
 car_step
 summary(car_step)
+car_step
 
-
+car_lm2 <- lm(Present_Price~Year + Selling_Price , data= car_data)
+summary(car_lm2)
 
 
 # 잔차의 정규성 검정 1. 히스토그램으로 확인
-redi_car <- car_step$residuals
+redi_car <- car_lm2$residuals
 hist(redi_car)
 
 
@@ -57,7 +60,7 @@ shapiro.test(redi_car) #귀무가설: 데이터가 정규분포를 따른다. ->
 # 패키지이용
 #install.packages("car")
 library("car")
-scatterplotMatrix(car_)
+scatterplotMatrix(car_data)
 
 
 # 잔차의 등분산성 검정
@@ -69,7 +72,7 @@ plot(resi_5)
 residualPlots(car_step)
 
 # 등분산검정
-ncvTest(car_step) #비 상수성 테스트
+ncvTest(car_lm2) #비 상수성 테스트
 #p_value 가 0.05보다 커야 잔차의 등 분산성(상수성)을 만족한다.
 
 
